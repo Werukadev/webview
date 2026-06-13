@@ -10,7 +10,7 @@ abstract final class AppConfig {
   // ── URL & SUMBER KONTEN ────────────────────────────────────────────────────
 
   /// URL utama yang ditampilkan di WebView.
-  static const String webUrl = 'https://www.weruka.dev';
+  static const String webUrl = 'https://webview.weruka.dev';
 
   /// Nama aplikasi (judul di AppBar, halaman offline, dll).
   static const String appName = 'My WebView App';

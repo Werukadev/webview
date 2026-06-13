@@ -260,6 +260,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
       // ── Created ───────────────────────────────────────────────────────────
       onWebViewCreated: (controller) async {
         _controller = controller;
+
+        // JS → Flutter: load any URL directly (used by offline landing page)
+        controller.addJavaScriptHandler(
+          handlerName: 'loadUrl',
+          callback: (args) {
+            if (args.isEmpty) return;
+            var url = args[0].toString().trim();
+            if (url.isEmpty) return;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+              url = 'https://$url';
+            }
+            _loadUrl(url);
+          },
+        );
+
         if (useLocalHtml) await _loadOfflineHtml();
       },
 

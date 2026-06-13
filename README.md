@@ -121,7 +121,7 @@ webview/
 ### 1. Clone / Download Project
 
 ```bash
-# Jika project sudah ada, langsung ke direktori
+git clone https://github.com/Werukadev/webview.git
 cd webview
 ```
 
@@ -867,3 +867,21 @@ A: Lihat bagian [App Links / Universal Links (HTTPS)](#app-links--universal-link
 ## Lisensi
 
 MIT License — bebas digunakan untuk project komersial maupun open source.
+
+---
+
+## Repository
+
+**GitHub:** [https://github.com/Werukadev/webview](https://github.com/Werukadev/webview)
+
+**Demo / Landing Page:** [https://webview.weruka.dev](https://webview.weruka.dev)
+
+---
+
+## Kontak
+
+Pertanyaan, laporan bug, atau kontribusi:
+
+- **Email:** info@weruka.dev
+- **Website:** [weruka.dev](https://weruka.dev)
+- **GitHub Issues:** [github.com/Werukadev/webview/issues](https://github.com/Werukadev/webview/issues)

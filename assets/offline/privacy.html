@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Privacy Policy — Flutter WebView Template</title>
+  <meta name="description" content="Kebijakan privasi Flutter WebView Template oleh weruka.dev — template open-source yang tidak mengumpulkan data pengguna.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" href="webview.png">
+  <link rel="apple-touch-icon" href="webview.png">
+  <style>
+    :root {
+      --bg:#020018; --surface:#0d0b2e; --surf2:#12103a;
+      --border:rgba(255,255,255,0.07); --primary:#3B82F6;
+      --prim-g:rgba(59,130,246,0.15); --purple:#8B5CF6;
+      --text:#F1F5F9; --muted:#94A3B8; --success:#10B981;
+      --px:16px;
+    }
+    @media(min-width:640px){ :root{ --px:24px; } }
+    @media(min-width:1024px){ :root{ --px:32px; } }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      line-height:1.65; min-height:100vh; overflow-x:hidden;
+    }
+    a { color:var(--primary); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code {
+      font-family:'SF Mono',Consolas,monospace; font-size:.85em;
+      background:rgba(255,255,255,.08); padding:2px 6px; border-radius:5px;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position:sticky; top:0; z-index:100;
+      padding:12px var(--px);
+      background:rgba(2,0,24,.88);
+      backdrop-filter:blur(20px) saturate(1.4);
+      -webkit-backdrop-filter:blur(20px) saturate(1.4);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .nav-brand { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; }
+    .nav-brand img { width:28px; height:28px; border-radius:7px; }
+    .nav-back {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:700; color:var(--muted);
+      padding:6px 12px; border-radius:8px; border:1px solid var(--border);
+      transition:all .15s; white-space:nowrap;
+    }
+    .nav-back:hover { color:var(--text); border-color:rgba(255,255,255,.2); text-decoration:none; background:rgba(255,255,255,.05); }
+
+    /* ── Page header ── */
+    .page-hero {
+      text-align:center; padding:52px var(--px) 36px;
+      max-width:680px; margin:0 auto;
+    }
+    .page-icon { font-size:48px; margin-bottom:16px; }
+    .page-title {
+      font-size:clamp(24px,6vw,40px); font-weight:900;
+      letter-spacing:-.5px; line-height:1.1; margin-bottom:12px;
+    }
+    .grad {
+      background:linear-gradient(135deg,var(--primary),var(--purple));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .page-sub { color:var(--muted); font-size:clamp(13px,3.5vw,15px); line-height:1.75; }
+
+    /* ── Content ── */
+    .content { max-width:720px; margin:0 auto; padding:0 var(--px) 64px; }
+
+    /* ── Last updated ── */
+    .meta {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:11px; font-weight:700; color:var(--muted);
+      background:var(--surface); border:1px solid var(--border);
+      padding:4px 12px; border-radius:20px; margin-bottom:32px;
+    }
+
+    /* ── Section ── */
+    .sect { margin-bottom:32px; }
+    .sect-title {
+      font-size:clamp(15px,3.5vw,18px); font-weight:800;
+      margin-bottom:12px; padding-bottom:8px;
+      border-bottom:1px solid var(--border);
+    }
+    .sect p { font-size:14px; color:var(--muted); line-height:1.8; margin-bottom:10px; }
+    .sect p:last-child { margin-bottom:0; }
+    .sect ul { font-size:14px; color:var(--muted); line-height:1.8; padding-left:20px; margin-bottom:10px; }
+    .sect ul:last-child { margin-bottom:0; }
+    .sect li { margin-bottom:6px; }
+
+    /* ── Highlight box ── */
+    .highlight {
+      background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(59,130,246,.06));
+      border:1px solid rgba(16,185,129,.2); border-radius:12px;
+      padding:18px 20px; margin-bottom:32px;
+      font-size:14px; color:var(--text); line-height:1.75;
+    }
+    .highlight strong { color:#34d399; }
+
+    /* ── Footer ── */
+    footer {
+      text-align:center; padding:24px var(--px);
+      border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.9;
+    }
+    footer a { color:var(--muted); }
+    footer a:hover { color:var(--primary); }
+    @media(min-width:480px){ footer{ font-size:13px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <img src="webview.png" alt="Logo">
+    <span>WebView Template</span>
+  </div>
+  <a href="index.html" class="nav-back">← Kembali</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-icon">🔒</div>
+  <h1 class="page-title"><span class="grad">Privacy</span> Policy</h1>
+  <p class="page-sub">Kami menghormati privasi Anda. Halaman ini menjelaskan bagaimana data ditangani dalam template ini.</p>
+</div>
+
+<div class="content">
+
+  <div class="meta">📅 Terakhir diperbarui: 13 Juni 2024</div>
+
+  <div class="highlight">
+    <strong>🔒 Ringkasan:</strong> Flutter WebView Template adalah template open-source yang <strong>tidak mengumpulkan, menyimpan, atau mengirimkan data pribadi pengguna akhir</strong>. Template ini hanya menjadi "jembatan" antara aplikasi Flutter dan website yang Anda konfigurasikan.
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">1. Tentang Template Ini</div>
+    <p>Flutter WebView Template ("Template") adalah kode sumber open-source yang dikembangkan oleh <strong>weruka.dev</strong> dan didistribusikan di bawah lisensi MIT. Template ini bukan aplikasi akhir — melainkan kerangka dasar yang digunakan pengembang untuk membangun aplikasi mereka sendiri.</p>
+    <p>Kebijakan privasi ini berlaku untuk halaman landing ini (<code>index.html</code>) dan halaman pendukungnya. Kebijakan privasi aplikasi yang dibangun menggunakan template ini sepenuhnya menjadi tanggung jawab pengembang masing-masing.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">2. Data yang Tidak Kami Kumpulkan</div>
+    <p>Template ini <strong>tidak</strong> mengumpulkan data berikut:</p>
+    <ul>
+      <li>Informasi identitas pribadi (nama, email, nomor telepon)</li>
+      <li>Data lokasi atau GPS</li>
+      <li>Riwayat penjelajahan atau aktivitas dalam aplikasi</li>
+      <li>Data kamera, mikrofon, atau file pengguna</li>
+      <li>Informasi perangkat atau identifiers unik</li>
+      <li>Data analitik atau telemetri penggunaan</li>
+    </ul>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">3. Halaman Offline &amp; Assets Lokal</div>
+    <p>Halaman ini (<code>index.html</code>) berjalan sepenuhnya secara lokal di perangkat pengguna sebagai fallback saat tidak ada koneksi internet. Halaman ini:</p>
+    <ul>
+      <li>Tidak mengirimkan data ke server eksternal</li>
+      <li>Tidak menggunakan cookie pihak ketiga</li>
+      <li>Tidak memuat skrip analitik (Google Analytics, Facebook Pixel, dll.)</li>
+      <li>Menggunakan <code>localStorage</code> dan <code>sessionStorage</code> <em>hanya</em> untuk keperluan demonstrasi fitur WebView (bagian Test Fitur) — data ini tidak dikirim ke mana pun</li>
+    </ul>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">4. Izin Perangkat</div>
+    <p>Aplikasi yang dibangun menggunakan template ini mungkin meminta izin perangkat berikut. Semua izin bersifat opsional dan dapat dinonaktifkan lewat <code>app_config.dart</code>:</p>
+    <ul>
+      <li><strong>Kamera &amp; Mikrofon:</strong> Diperlukan untuk fitur WebRTC (video call di browser). Data tidak disimpan oleh template.</li>
+      <li><strong>Lokasi:</strong> Diperlukan untuk <code>navigator.geolocation</code>. Data tidak dikirim ke weruka.dev.</li>
+      <li><strong>Storage/File:</strong> Diperlukan untuk upload dan download file. File diproses secara lokal.</li>
+    </ul>
+    <p>Data yang diperoleh dari izin-izin tersebut diteruskan langsung ke website yang dikonfigurasi oleh pengembang aplikasi — bukan ke weruka.dev.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">5. Tautan Eksternal</div>
+    <p>Halaman ini mengandung tautan ke situs eksternal seperti GitHub, WhatsApp, Telegram, Twitter, Facebook, dan LinkedIn untuk keperluan berbagi. Kami tidak bertanggung jawab atas kebijakan privasi situs-situs tersebut. Kunjungi situs masing-masing untuk informasi lebih lanjut.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">6. Tanggung Jawab Pengembang Aplikasi</div>
+    <p>Jika Anda menggunakan template ini untuk membangun aplikasi, Anda bertanggung jawab untuk:</p>
+    <ul>
+      <li>Menyusun kebijakan privasi untuk aplikasi Anda sendiri</li>
+      <li>Mematuhi regulasi privasi yang berlaku (GDPR, UU PDP Indonesia, dll.)</li>
+      <li>Menginformasikan pengguna tentang data yang dikumpulkan oleh website yang dimuat di WebView</li>
+      <li>Mengelola izin perangkat sesuai kebutuhan aplikasi Anda</li>
+    </ul>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">7. Perubahan Kebijakan</div>
+    <p>Kami dapat memperbarui kebijakan privasi ini sewaktu-waktu. Perubahan akan ditandai dengan memperbarui tanggal "Terakhir diperbarui" di bagian atas halaman ini. Versi terbaru selalu tersedia di repository GitHub.</p>
+  </div>
+
+  <div class="sect">
+    <div class="sect-title">8. Hubungi Kami</div>
+    <p>Jika Anda memiliki pertanyaan tentang kebijakan privasi ini, hubungi kami:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:info@weruka.dev">info@weruka.dev</a></li>
+      <li><strong>Website:</strong> <a href="https://weruka.dev" target="_blank" rel="noopener">weruka.dev</a></li>
+      <li><strong>GitHub:</strong> <a href="https://github.com/Werukadev/webview" target="_blank" rel="noopener">github.com/Werukadev/webview</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2024 <a href="https://weruka.dev" target="_blank" rel="noopener">weruka.dev</a>
+  &nbsp;·&nbsp; <a href="index.html">Beranda</a>
+  &nbsp;·&nbsp; <a href="terms.html">Terms &amp; Conditions</a>
+  &nbsp;·&nbsp; <a href="contact.html">Contact</a>
+</footer>
+
+</body>
+</html>

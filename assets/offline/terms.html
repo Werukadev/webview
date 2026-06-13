@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Terms &amp; Conditions — Flutter WebView Template</title>
+  <meta name="description" content="Syarat dan ketentuan penggunaan Flutter WebView Template oleh weruka.dev — template open-source berlisensi MIT.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" href="webview.png">
+  <link rel="apple-touch-icon" href="webview.png">
+  <style>
+    :root {
+      --bg:#020018; --surface:#0d0b2e; --surf2:#12103a;
+      --border:rgba(255,255,255,0.07); --primary:#3B82F6;
+      --prim-g:rgba(59,130,246,0.15); --purple:#8B5CF6;
+      --text:#F1F5F9; --muted:#94A3B8; --success:#10B981;
+      --px:16px;
+    }
+    @media(min-width:640px){ :root{ --px:24px; } }
+    @media(min-width:1024px){ :root{ --px:32px; } }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      line-height:1.65; min-height:100vh; overflow-x:hidden;
+    }
+    a { color:var(--primary); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code {
+      font-family:'SF Mono',Consolas,monospace; font-size:.85em;
+      background:rgba(255,255,255,.08); padding:2px 6px; border-radius:5px;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position:sticky; top:0; z-index:100;
+      padding:12px var(--px);
+      background:rgba(2,0,24,.88);
+      backdrop-filter:blur(20px) saturate(1.4);
+      -webkit-backdrop-filter:blur(20px) saturate(1.4);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .nav-brand { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; }
+    .nav-brand img { width:28px; height:28px; border-radius:7px; }
+    .nav-back {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:700; color:var(--muted);
+      padding:6px 12px; border-radius:8px; border:1px solid var(--border);
+      transition:all .15s; white-space:nowrap;
+    }
+    .nav-back:hover { color:var(--text); border-color:rgba(255,255,255,.2); text-decoration:none; background:rgba(255,255,255,.05); }
+
+    /* ── Page header ── */
+    .page-hero {
+      text-align:center; padding:52px var(--px) 36px;
+      max-width:680px; margin:0 auto;
+    }
+    .page-icon { font-size:48px; margin-bottom:16px; }
+    .page-title {
+      font-size:clamp(24px,6vw,40px); font-weight:900;
+      letter-spacing:-.5px; line-height:1.1; margin-bottom:12px;
+    }
+    .grad {
+      background:linear-gradient(135deg,var(--primary),var(--purple));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .page-sub { color:var(--muted); font-size:clamp(13px,3.5vw,15px); line-height:1.75; }
+
+    /* ── Content ── */
+    .content { max-width:720px; margin:0 auto; padding:0 var(--px) 64px; }
+
+    /* ── Last updated ── */
+    .meta {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:11px; font-weight:700; color:var(--muted);
+      background:var(--surface); border:1px solid var(--border);
+      padding:4px 12px; border-radius:20px; margin-bottom:32px;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:20px 24px; margin-bottom:32px;
+    }
+    .toc-title { font-size:13px; font-weight:800; margin-bottom:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .toc ol { padding-left:18px; }
+    .toc li { font-size:13px; line-height:1.8; }
+    .toc a { color:var(--muted); }
+    .toc a:hover { color:var(--primary); }
+
+    /* ── Section ── */
+    .sect { margin-bottom:32px; }
+    .sect-title {
+      font-size:clamp(15px,3.5vw,18px); font-weight:800;
+      margin-bottom:12px; padding-bottom:8px;
+      border-bottom:1px solid var(--border);
+    }
+    .sect p { font-size:14px; color:var(--muted); line-height:1.8; margin-bottom:10px; }
+    .sect p:last-child { margin-bottom:0; }
+    .sect ul, .sect ol { font-size:14px; color:var(--muted); line-height:1.8; padding-left:20px; margin-bottom:10px; }
+    .sect li { margin-bottom:6px; }
+
+    /* ── MIT box ── */
+    .mit-box {
+      background:#08071f; border:1px solid var(--border);
+      border-radius:12px; padding:20px;
+      font-family:'SF Mono',Consolas,monospace;
+      font-size:12px; line-height:1.75; color:#94A3B8;
+      margin-top:12px; white-space:pre-wrap; overflow-x:auto;
+    }
+
+    /* ── Highlight ── */
+    .highlight {
+      background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(139,92,246,.06));
+      border:1px solid rgba(59,130,246,.2); border-radius:12px;
+      padding:18px 20px; margin-bottom:32px;
+      font-size:14px; color:var(--text); line-height:1.75;
+    }
+    .highlight strong { color:#93c5fd; }
+
+    /* ── Footer ── */
+    footer {
+      text-align:center; padding:24px var(--px);
+      border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.9;
+    }
+    footer a { color:var(--muted); }
+    footer a:hover { color:var(--primary); }
+    @media(min-width:480px){ footer{ font-size:13px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <img src="webview.png" alt="Logo">
+    <span>WebView Template</span>
+  </div>
+  <a href="index.html" class="nav-back">← Kembali</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-icon">📋</div>
+  <h1 class="page-title">Terms &amp; <span class="grad">Conditions</span></h1>
+  <p class="page-sub">Syarat dan ketentuan penggunaan Flutter WebView Template yang didistribusikan oleh weruka.dev.</p>
+</div>
+
+<div class="content">
+
+  <div class="meta">📅 Terakhir diperbarui: 13 Juni 2024</div>
+
+  <div class="highlight">
+    <strong>📌 Ringkasan:</strong> Template ini dirilis di bawah <strong>Lisensi MIT</strong> — Anda bebas menggunakannya untuk proyek pribadi maupun komersial, dengan atau tanpa modifikasi, selama menyertakan pemberitahuan hak cipta asli.
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Daftar Isi</div>
+    <ol>
+      <li><a href="#s1">Penerimaan Syarat</a></li>
+      <li><a href="#s2">Lisensi Penggunaan (MIT)</a></li>
+      <li><a href="#s3">Penggunaan yang Diizinkan</a></li>
+      <li><a href="#s4">Penggunaan yang Dilarang</a></li>
+      <li><a href="#s5">Tanggung Jawab Pengembang</a></li>
+      <li><a href="#s6">Penafian Jaminan</a></li>
+      <li><a href="#s7">Batasan Tanggung Jawab</a></li>
+      <li><a href="#s8">Merek Dagang</a></li>
+      <li><a href="#s9">Kontribusi</a></li>
+      <li><a href="#s10">Perubahan Syarat</a></li>
+      <li><a href="#s11">Hukum yang Berlaku</a></li>
+      <li><a href="#s12">Hubungi Kami</a></li>
+    </ol>
+  </div>
+
+  <div class="sect" id="s1">
+    <div class="sect-title">1. Penerimaan Syarat</div>
+    <p>Dengan mengunduh, mengkloning, atau menggunakan Flutter WebView Template ("Template"), Anda menyatakan telah membaca, memahami, dan menyetujui syarat dan ketentuan ini. Jika Anda tidak menyetujui syarat ini, harap tidak menggunakan Template.</p>
+  </div>
+
+  <div class="sect" id="s2">
+    <div class="sect-title">2. Lisensi Penggunaan (MIT)</div>
+    <p>Template ini didistribusikan di bawah <strong>MIT License</strong>. Teks lisensi lengkap:</p>
+    <div class="mit-box">MIT License
+
+Copyright (c) 2024 weruka.dev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</div>
+  </div>
+
+  <div class="sect" id="s3">
+    <div class="sect-title">3. Penggunaan yang Diizinkan</div>
+    <p>Sesuai lisensi MIT, Anda diperbolehkan untuk:</p>
+    <ul>
+      <li>Menggunakan Template untuk proyek pribadi, komersial, atau open-source</li>
+      <li>Memodifikasi Template sesuai kebutuhan Anda</li>
+      <li>Mendistribusikan Template asli atau versi modifikasi Anda</li>
+      <li>Menjual produk yang dibangun menggunakan Template ini</li>
+      <li>Mengintegrasikan Template ke dalam proyek yang lebih besar</li>
+    </ul>
+    <p>Syarat satu-satunya: sertakan pemberitahuan hak cipta dan teks lisensi MIT asli pada setiap salinan atau distribusi Template.</p>
+  </div>
+
+  <div class="sect" id="s4">
+    <div class="sect-title">4. Penggunaan yang Dilarang</div>
+    <p>Anda <strong>tidak diperbolehkan</strong> menggunakan Template untuk:</p>
+    <ul>
+      <li>Aktivitas ilegal, penipuan, atau yang merugikan pihak lain</li>
+      <li>Mendistribusikan malware, spyware, atau konten berbahaya</li>
+      <li>Melanggar hak privasi pengguna akhir aplikasi Anda</li>
+      <li>Melanggar hak kekayaan intelektual pihak ketiga</li>
+      <li>Menyalahgunakan izin perangkat (kamera, lokasi, dll.) tanpa sepengetahuan pengguna</li>
+      <li>Mengklaim Template ini sebagai karya Anda sendiri tanpa menyebut sumber</li>
+    </ul>
+  </div>
+
+  <div class="sect" id="s5">
+    <div class="sect-title">5. Tanggung Jawab Pengembang</div>
+    <p>Sebagai pengembang yang menggunakan Template ini, Anda sepenuhnya bertanggung jawab atas:</p>
+    <ul>
+      <li>Konten website yang dimuat di WebView aplikasi Anda</li>
+      <li>Kebijakan privasi dan keamanan aplikasi yang Anda bangun</li>
+      <li>Kepatuhan terhadap regulasi App Store / Google Play</li>
+      <li>Pengelolaan data pengguna akhir sesuai hukum yang berlaku</li>
+      <li>Pengujian dan kualitas aplikasi final Anda</li>
+    </ul>
+  </div>
+
+  <div class="sect" id="s6">
+    <div class="sect-title">6. Penafian Jaminan</div>
+    <p>Template ini disediakan "sebagaimana adanya" (<em>as is</em>) tanpa jaminan apa pun, tersurat maupun tersirat. weruka.dev tidak memberikan jaminan terkait:</p>
+    <ul>
+      <li>Kecocokan Template untuk tujuan tertentu</li>
+      <li>Ketersediaan atau keandalan Template tanpa gangguan</li>
+      <li>Kompatibilitas dengan versi Flutter atau library tertentu di masa depan</li>
+      <li>Bebas dari bug atau error</li>
+    </ul>
+  </div>
+
+  <div class="sect" id="s7">
+    <div class="sect-title">7. Batasan Tanggung Jawab</div>
+    <p>Sejauh diizinkan oleh hukum yang berlaku, weruka.dev tidak bertanggung jawab atas kerugian langsung, tidak langsung, insidental, khusus, atau konsekuensial yang timbul dari penggunaan atau ketidakmampuan menggunakan Template, termasuk namun tidak terbatas pada kehilangan data, keuntungan, atau reputasi bisnis.</p>
+  </div>
+
+  <div class="sect" id="s8">
+    <div class="sect-title">8. Merek Dagang</div>
+    <p>Nama "weruka.dev" dan logo terkait adalah merek dagang weruka.dev. Lisensi MIT tidak memberikan hak untuk menggunakan nama atau merek ini dalam produk atau layanan Anda tanpa izin tertulis sebelumnya.</p>
+  </div>
+
+  <div class="sect" id="s9">
+    <div class="sect-title">9. Kontribusi</div>
+    <p>Kontribusi ke repository ini (pull request, laporan bug, saran fitur) sangat disambut. Dengan mengirimkan kontribusi, Anda menyetujui bahwa kontribusi tersebut akan dilisensikan di bawah lisensi MIT yang sama dengan Template ini.</p>
+    <p>Kirimkan kontribusi melalui: <a href="https://github.com/Werukadev/webview" target="_blank" rel="noopener">github.com/Werukadev/webview</a></p>
+  </div>
+
+  <div class="sect" id="s10">
+    <div class="sect-title">10. Perubahan Syarat</div>
+    <p>Kami berhak memperbarui syarat dan ketentuan ini sewaktu-waktu. Perubahan signifikan akan diumumkan melalui repository GitHub. Penggunaan Template setelah perubahan dianggap sebagai penerimaan syarat yang diperbarui.</p>
+  </div>
+
+  <div class="sect" id="s11">
+    <div class="sect-title">11. Hukum yang Berlaku</div>
+    <p>Syarat dan ketentuan ini diatur oleh hukum Republik Indonesia. Setiap sengketa yang timbul diselesaikan melalui musyawarah mufakat. Jika tidak tercapai kesepakatan, sengketa diselesaikan melalui pengadilan yang berwenang di Indonesia.</p>
+  </div>
+
+  <div class="sect" id="s12">
+    <div class="sect-title">12. Hubungi Kami</div>
+    <p>Pertanyaan terkait syarat dan ketentuan ini dapat diajukan melalui:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:info@weruka.dev">info@weruka.dev</a></li>
+      <li><strong>Website:</strong> <a href="https://weruka.dev" target="_blank" rel="noopener">weruka.dev</a></li>
+      <li><strong>GitHub:</strong> <a href="https://github.com/Werukadev/webview" target="_blank" rel="noopener">github.com/Werukadev/webview</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2024 <a href="https://weruka.dev" target="_blank" rel="noopener">weruka.dev</a>
+  &nbsp;·&nbsp; <a href="index.html">Beranda</a>
+  &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a>
+  &nbsp;·&nbsp; <a href="contact.html">Contact</a>
+</footer>
+
+</body>
+</html>
