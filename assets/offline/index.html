@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+  <!-- ══ SEO ══════════════════════════════════════════════════════════════ -->
+  <title>Flutter WebView Template — Full Featured, Single Config File</title>
+  <meta name="description" content="Template Flutter WebView kaya fitur untuk Android & iOS: download, upload, WebRTC, GPS, deep link, offline mode, URL routing — semua dikontrol dari satu file konfigurasi.">
+  <meta name="keywords" content="flutter webview, android webview, ios webview, flutter template, webview app, flutter inappwebview">
+  <meta name="author" content="weruka.dev">
+  <meta name="robots" content="index, follow">
+  <!-- Ganti dengan URL halaman Anda yang sudah di-deploy -->
+  <link rel="canonical" href="https://weruka.dev">
+
+  <!-- ══ Favicon ════════════════════════════════════════════════════════════ -->
+  <link rel="icon" type="image/png" sizes="512x512" href="webview.png">
+  <link rel="apple-touch-icon" href="webview.png">
+
+  <!-- ══ Open Graph (Facebook · WhatsApp · Telegram · LinkedIn) ════════════ -->
+  <meta property="og:type"         content="website">
+  <meta property="og:site_name"    content="Flutter WebView Template">
+  <meta property="og:title"        content="Flutter WebView Template — Kaya Fitur, Satu Config File">
+  <meta property="og:description"  content="Template Flutter WebView untuk Android & iOS. Download, upload, WebRTC, GPS, deep link, offline mode — semua dari satu file. MIT License.">
+  <!-- Ganti dengan URL absolut gambar Anda (min 1200×630 px untuk Facebook) -->
+  <meta property="og:image"        content="https://weruka.dev/assets/offline/webview.png">
+  <meta property="og:image:alt"    content="Flutter WebView Template Logo">
+  <meta property="og:image:width"  content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:url"          content="https://weruka.dev">
+  <meta property="og:locale"       content="id_ID">
+
+  <!-- ══ Twitter / X Card ══════════════════════════════════════════════════ -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Flutter WebView Template — Kaya Fitur, Satu Config File">
+  <meta name="twitter:description" content="Template Flutter WebView untuk Android & iOS. Download, upload, WebRTC, GPS, deep link, offline — semua dari satu file.">
+  <meta name="twitter:image"       content="https://weruka.dev/assets/offline/webview.png">
+
+  <!-- ══ Structured Data ═══════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Flutter WebView Template",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Android, iOS",
+    "description": "Template Flutter WebView kaya fitur dengan konfigurasi terpusat dalam satu file.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Organization", "name": "weruka.dev", "url": "https://weruka.dev" }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg:      #020018;
+      --surface: #0d0b2e;
+      --surf2:   #12103a;
+      --border:  rgba(255,255,255,0.07);
+      --primary: #3B82F6;
+      --prim-g:  rgba(59,130,246,0.15);
+      --purple:  #8B5CF6;
+      --text:    #F1F5F9;
+      --muted:   #94A3B8;
+      --success: #10B981;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      line-height:1.65; min-height:100vh;
+    }
+    a { color:var(--primary); text-decoration:none; }
+    code {
+      font-family:'SF Mono','Fira Code',Consolas,monospace;
+      font-size:.88em; background:rgba(255,255,255,.07);
+      padding:2px 7px; border-radius:5px;
+    }
+
+    /* ── Announcement bar ───────────────────────────────── */
+    .announce {
+      background: linear-gradient(90deg, #1e3a8a 0%, #312e81 40%, #4c1d95 100%);
+      border-bottom: 1px solid rgba(139,92,246,.35);
+      padding: 10px 24px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      flex-wrap: wrap; text-align: center;
+    }
+    .announce-badge {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff; font-size: 10px; font-weight: 800;
+      padding: 2px 10px; border-radius: 20px;
+      letter-spacing: .6px; text-transform: uppercase; white-space: nowrap;
+    }
+    .announce-text {
+      font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -.1px;
+    }
+    .announce-text span {
+      background: linear-gradient(90deg, #93c5fd, #c4b5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .announce-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 700; color: rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.2); border-radius: 8px;
+      padding: 3px 12px; transition: all .2s; white-space: nowrap;
+    }
+    .announce-link:hover { color: #fff; background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.4); -webkit-text-fill-color: #fff; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position:sticky; top:0; z-index:100;
+      padding:14px 24px;
+      background:rgba(2,0,24,.82);
+      backdrop-filter:blur(20px) saturate(1.4);
+      -webkit-backdrop-filter:blur(20px) saturate(1.4);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-brand { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; }
+    .nav-brand img { width:30px; height:30px; border-radius:8px; }
+    .nav-pill {
+      font-size:11px; font-weight:700; letter-spacing:.4px;
+      padding:4px 12px; border-radius:20px;
+      background:var(--prim-g); border:1px solid rgba(59,130,246,.35); color:var(--primary);
+    }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    .hero { text-align:center; padding:68px 24px 44px; max-width:680px; margin:0 auto; }
+    .hero-logo {
+      width:96px; height:96px; border-radius:22px;
+      margin:0 auto 28px; display:block;
+      box-shadow:0 0 0 1px rgba(59,130,246,.3),0 0 60px rgba(59,130,246,.22);
+    }
+    .chip {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--prim-g); border:1px solid rgba(59,130,246,.3); color:var(--primary);
+      font-size:12px; font-weight:700; padding:5px 14px; border-radius:20px;
+      margin-bottom:20px; letter-spacing:.3px;
+    }
+    h1 {
+      font-size:clamp(26px,6.5vw,52px); font-weight:900;
+      letter-spacing:-1.5px; line-height:1.12; margin-bottom:18px;
+    }
+    .grad {
+      background:linear-gradient(135deg,var(--primary) 0%,var(--purple) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .hero-sub { color:var(--muted); font-size:16px; max-width:520px; margin:0 auto 32px; line-height:1.75; }
+    .hero-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:13px 26px; border-radius:12px; font-size:14px; font-weight:700;
+      cursor:pointer; border:none; transition:opacity .2s,transform .15s;
+    }
+    .btn:hover { opacity:.87; transform:translateY(-1px); }
+    .btn-p { background:linear-gradient(135deg,var(--primary),var(--purple)); color:#fff; }
+    .btn-g { background:transparent; color:var(--text); border:1px solid var(--border); }
+    .btn-g:hover { border-color:var(--primary); background:var(--prim-g); }
+
+    /* ── Stats ───────────────────────────────────────────── */
+    .stats {
+      display:flex; max-width:580px; margin:0 auto 56px;
+      background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden;
+    }
+    .stat { flex:1; padding:22px 12px; text-align:center; border-right:1px solid var(--border); }
+    .stat:last-child { border-right:none; }
+    .stat-v { font-size:23px; font-weight:900; color:var(--primary); line-height:1.1; }
+    .stat-l { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:4px; }
+
+    /* ── Sections ────────────────────────────────────────── */
+    .sec { max-width:880px; margin:0 auto; padding:0 24px 56px; }
+    .sec-h { font-size:21px; font-weight:800; margin-bottom:6px; letter-spacing:-.3px; }
+    .sec-s { color:var(--muted); font-size:14px; margin-bottom:24px; }
+
+    /* ── Feature grid ────────────────────────────────────── */
+    .fgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
+    .fcard {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:14px; padding:18px 16px; transition:border-color .2s,transform .2s;
+    }
+    .fcard:hover { border-color:rgba(59,130,246,.4); transform:translateY(-2px); }
+    .ficon { font-size:24px; margin-bottom:10px; }
+    .fname { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .fdesc { font-size:12px; color:var(--muted); line-height:1.55; }
+
+    /* ── Code preview ────────────────────────────────────── */
+    .cbox { background:#08071f; border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+    .ctop {
+      display:flex; align-items:center; gap:7px;
+      padding:12px 18px; border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+    }
+    .d { width:10px; height:10px; border-radius:50%; }
+    .dr{background:#FF5F57;} .dy{background:#FEBC2E;} .dg{background:#28C840;}
+    .cfile { font-size:12px; color:var(--muted); margin-left:4px; }
+    pre {
+      padding:20px; overflow-x:auto;
+      font-family:'SF Mono','Fira Code',Consolas,monospace;
+      font-size:12.5px; line-height:1.75; color:#CBD5E1;
+    }
+    .kw{color:#c792ea;} .ty{color:#80cbc4;} .st{color:#c3e88d;}
+    .cm{color:#4a6077;} .nm{color:#82aaff;} .bl{color:#89ddff;}
+
+    /* ── Share card ──────────────────────────────────────── */
+    .share-card {
+      background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.08));
+      border:1px solid rgba(59,130,246,.25); border-radius:20px; padding:36px 24px; text-align:center;
+    }
+    .share-h { font-size:21px; font-weight:800; margin-bottom:8px; }
+    .share-s { color:var(--muted); font-size:14px; margin-bottom:24px; }
+    .share-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .sbtn {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:11px 20px; border-radius:12px; font-size:13px; font-weight:700;
+      cursor:pointer; border:none; color:#fff; transition:opacity .2s,transform .15s;
+    }
+    .sbtn:hover { opacity:.84; transform:translateY(-1px); }
+    .sbtn svg { width:16px; height:16px; fill:currentColor; flex-shrink:0; }
+    .s-wa{background:#25D366;} .s-tg{background:#229ED9;} .s-tw{background:#000;}
+    .s-fb{background:#1877F2;} .s-li{background:#0A66C2;}
+    .s-cp{background:var(--surf2);border:1px solid var(--border);color:var(--text);}
+
+    /* ── Toast ───────────────────────────────────────────── */
+    .toast {
+      position:fixed; bottom:24px; left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:#1e293b; border:1px solid rgba(255,255,255,.1);
+      color:var(--text); padding:11px 20px; border-radius:12px;
+      font-size:14px; font-weight:600; z-index:999;
+      transition:transform .35s cubic-bezier(0.34,1.56,0.64,1);
+      white-space:nowrap; pointer-events:none;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* ── Accordion ───────────────────────────────────────── */
+    .acc { border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:12px; }
+    .acc-h {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 20px; cursor:pointer;
+      background:var(--surface); user-select:none; transition:background .15s;
+    }
+    .acc-h:hover { background:var(--surf2); }
+    .acc-l { display:flex; align-items:center; gap:10px; }
+    .acc-l strong { font-size:14px; }
+    .acc-tag {
+      font-size:9px; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
+      padding:2px 8px; border-radius:6px;
+      background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.3); color:var(--success);
+    }
+    .chev { color:var(--muted); font-size:18px; transition:transform .3s; }
+    .acc-b { display:none; padding:20px; border-top:1px solid var(--border); }
+    .acc-b.open { display:block; }
+
+    /* ── Test grid ───────────────────────────────────────── */
+    .tgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; margin-bottom:14px; }
+    .tbtn {
+      padding:12px 10px; border-radius:10px; text-align:center;
+      border:1px solid var(--border); background:rgba(255,255,255,.03);
+      color:var(--text); font-size:12px; font-weight:700; cursor:pointer; transition:all .18s;
+    }
+    .tbtn:hover { border-color:var(--primary); background:var(--prim-g); color:var(--primary); }
+    .tbtn .ico { font-size:22px; display:block; margin-bottom:5px; }
+    .result {
+      background:#08071f; border:1px solid var(--border); border-radius:10px; padding:14px;
+      font-family:'SF Mono',Consolas,monospace; font-size:12px; line-height:1.65;
+      color:var(--muted); min-height:54px; white-space:pre-wrap; word-break:break-all;
+    }
+
+    /* ── Install steps ───────────────────────────────────── */
+    .steps { display:flex; flex-direction:column; gap:0; }
+    .step {
+      display:flex; gap:20px; padding:24px 0;
+      border-bottom:1px solid var(--border);
+    }
+    .step:last-child { border-bottom:none; }
+    .step-num {
+      flex-shrink:0; width:36px; height:36px; border-radius:50%;
+      background:var(--prim-g); border:1px solid rgba(59,130,246,.35);
+      color:var(--primary); font-size:14px; font-weight:900;
+      display:flex; align-items:center; justify-content:center; margin-top:2px;
+    }
+    .step-body { flex:1; }
+    .step-title { font-size:15px; font-weight:800; margin-bottom:6px; }
+    .step-desc { font-size:13px; color:var(--muted); line-height:1.65; margin-bottom:10px; }
+    .step-desc:last-child { margin-bottom:0; }
+    .cmd {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:#08071f; border:1px solid var(--border); border-radius:10px;
+      padding:12px 16px; margin-bottom:8px; cursor:pointer;
+    }
+    .cmd:last-child { margin-bottom:0; }
+    .cmd:hover { border-color:rgba(59,130,246,.4); }
+    .cmd-text {
+      font-family:'SF Mono','Fira Code',Consolas,monospace;
+      font-size:13px; color:#c3e88d; flex:1;
+    }
+    .cmd-copy { font-size:11px; color:var(--muted); white-space:nowrap; }
+    .req-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+    .req-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:10px; padding:14px 16px;
+    }
+    .req-name { font-size:13px; font-weight:700; }
+    .req-val { font-size:12px; color:var(--primary); font-weight:600; margin-top:2px; }
+
+    /* ── FAQ ─────────────────────────────────────────────── */
+    .faq-item {
+      border:1px solid var(--border); border-radius:14px;
+      overflow:hidden; margin-bottom:10px;
+    }
+    .faq-q {
+      display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+      padding:18px 20px; cursor:pointer;
+      background:var(--surface); user-select:none; transition:background .15s;
+    }
+    .faq-q:hover { background:var(--surf2); }
+    .faq-q-text { font-size:14px; font-weight:700; line-height:1.5; flex:1; }
+    .faq-chev { color:var(--muted); font-size:18px; flex-shrink:0; transition:transform .3s; margin-top:1px; }
+    .faq-a {
+      display:none; padding:0 20px 20px;
+      font-size:13px; color:var(--muted); line-height:1.75;
+      border-top:1px solid var(--border); padding-top:16px;
+    }
+    .faq-a.open { display:block; }
+    .faq-a p { margin-bottom:10px; }
+    .faq-a p:last-child { margin-bottom:0; }
+    .faq-a ul { padding-left:20px; }
+    .faq-a li { margin-bottom:6px; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      text-align:center; padding:28px 24px;
+      border-top:1px solid var(--border); color:var(--muted); font-size:13px;
+    }
+
+    @media(max-width:480px){
+      .stats{flex-wrap:wrap;}
+      .stat{min-width:50%;border-bottom:1px solid var(--border);}
+      .stat:nth-child(even){border-right:none;}
+      .stat:nth-last-child(-n+2){border-bottom:none;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce">
+  <span class="announce-badge">✨ Free &amp; Open Source</span>
+  <span class="announce-text"><span>Flutter WebView Template</span> — Satu config file untuk semua fitur Android &amp; iOS</span>
+  <a href="https://github.com" target="_blank" rel="noopener" class="announce-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="-webkit-text-fill-color:currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+    GitHub
+  </a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <img src="webview.png" alt="Logo">
+    <span>WebView App</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a href="#install" style="font-size:12px;font-weight:700;color:var(--muted);padding:5px 12px;border-radius:8px;transition:color .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Instalasi</a>
+    <a href="#faq" style="font-size:12px;font-weight:700;color:var(--muted);padding:5px 12px;border-radius:8px;transition:color .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">FAQ</a>
+    <span class="nav-pill">Flutter Template</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="webview.png" alt="Flutter WebView Template Logo" class="hero-logo">
+  <div class="chip">⚡ Flutter WebView Template &nbsp;·&nbsp; Free &amp; Open Source &nbsp;·&nbsp; MIT</div>
+  <h1>Satu File Config,<br><span class="grad">Semua Fitur Aktif</span></h1>
+  <p class="hero-sub">
+    Template WebView Flutter kaya fitur untuk <strong>Android &amp; iOS</strong>.
+    Download, upload, WebRTC, GPS, deep link, offline mode —
+    semua dikontrol dari <strong>satu file konfigurasi</strong>.
+  </p>
+  <div class="hero-actions">
+    <a href="https://github.com" class="btn btn-p" target="_blank" rel="noopener">⬇️ Download Template</a>
+    <button class="btn btn-g" onclick="document.getElementById('dev').scrollIntoView({behavior:'smooth'})">🧪 Test Fitur WebView</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-v">20+</div><div class="stat-l">Fitur</div></div>
+  <div class="stat"><div class="stat-v">1</div><div class="stat-l">Config File</div></div>
+  <div class="stat"><div class="stat-v">Android<br>&amp; iOS</div><div class="stat-l">Platform</div></div>
+  <div class="stat"><div class="stat-v">MIT</div><div class="stat-l">Lisensi</div></div>
+</div>
+
+<!-- FEATURES -->
+<div class="sec">
+  <div class="sec-h">🚀 Fitur Lengkap</div>
+  <p class="sec-s">Toggle setiap fitur dengan <code>true</code> / <code>false</code> — tidak perlu menyentuh file lain</p>
+  <div class="fgrid">
+    <div class="fcard"><div class="ficon">📥</div><div class="fname">File Download</div><div class="fdesc">Auto-download ke folder Downloads dengan progress &amp; notifikasi buka file</div></div>
+    <div class="fcard"><div class="ficon">📤</div><div class="fname">File Upload</div><div class="fdesc">File chooser native — foto, video, dokumen dari <code>&lt;input type="file"&gt;</code></div></div>
+    <div class="fcard"><div class="ficon">🎥</div><div class="fname">WebRTC</div><div class="fdesc">Kamera &amp; mikrofon perangkat dapat diakses dari halaman web</div></div>
+    <div class="fcard"><div class="ficon">📍</div><div class="fname">Geolokasi</div><div class="fdesc">GPS &amp; lokasi real-time via <code>navigator.geolocation</code></div></div>
+    <div class="fcard"><div class="ficon">🔗</div><div class="fname">Deep Link</div><div class="fdesc">Custom scheme <code>myapp://</code> &amp; HTTPS App Links / Universal Links</div></div>
+    <div class="fcard"><div class="ficon">📡</div><div class="fname">Offline Mode</div><div class="fdesc">Cache browser + fallback HTML lokal saat tidak ada koneksi</div></div>
+    <div class="fcard"><div class="ficon">🌐</div><div class="fname">URL Routing</div><div class="fdesc">Allowlist &amp; blocklist domain — kontrol URL mana yang masuk WebView</div></div>
+    <div class="fcard"><div class="ficon">🔄</div><div class="fname">Pull to Refresh</div><div class="fdesc">Gestur tarik ke bawah untuk reload halaman</div></div>
+    <div class="fcard"><div class="ficon">📱</div><div class="fname">Edge-to-Edge</div><div class="fdesc">Layar penuh dengan kontrol warna ikon status bar &amp; nav bar</div></div>
+    <div class="fcard"><div class="ficon">🗂️</div><div class="fname">JS Bridge</div><div class="fdesc">Komunikasi dua arah Flutter ↔ JavaScript via handler</div></div>
+    <div class="fcard"><div class="ficon">💾</div><div class="fname">Storage &amp; Cookie</div><div class="fdesc">localStorage, sessionStorage, DOM Storage &amp; Cookie</div></div>
+    <div class="fcard"><div class="ficon">💬</div><div class="fname">Dialog Modern</div><div class="fdesc">Alert / confirm / prompt JS diganti dialog animasi Material 3</div></div>
+  </div>
+</div>
+
+<!-- CONFIG PREVIEW -->
+<div class="sec">
+  <div class="sec-h">⚙️ Satu File untuk Semua</div>
+  <p class="sec-s">Cukup edit <code>lib/config/app_config.dart</code> — tidak perlu menyentuh file lain</p>
+  <div class="cbox">
+    <div class="ctop">
+      <span class="d dr"></span><span class="d dy"></span><span class="d dg"></span>
+      <span class="cfile">lib/config/app_config.dart</span>
+    </div>
+<pre><span class="cm">// ── URL utama WebView ───────────────────────────────────</span>
+<span class="kw">static const</span> <span class="ty">String</span> <span class="nm">webUrl</span>  = <span class="st">'https://domain-anda.com'</span>;
+<span class="kw">static const</span> <span class="ty">String</span> <span class="nm">appName</span> = <span class="st">'My App'</span>;
+
+<span class="cm">// ── Toggle fitur ────────────────────────────────────────</span>
+<span class="kw">static const bool</span> <span class="nm">enablePullToRefresh</span> = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">enableFileDownload</span>  = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">enableFileUpload</span>    = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">enableWebRTC</span>        = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">enableGeolocation</span>   = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">enableOfflineMode</span>   = <span class="bl">true</span>;
+<span class="kw">static const bool</span> <span class="nm">fullScreen</span>          = <span class="bl">true</span>;
+
+<span class="cm">// ── Warna ikon status bar ───────────────────────────────</span>
+<span class="kw">static const</span> <span class="ty">Brightness</span> <span class="nm">statusBarIconBrightness</span> = <span class="ty">Brightness</span>.light;
+
+<span class="cm">// ── URL Routing ─────────────────────────────────────────</span>
+<span class="kw">static const</span> <span class="ty">List&lt;String&gt;</span> <span class="nm">allowedDomains</span>  = [<span class="st">'domain-anda.com'</span>];
+<span class="kw">static const</span> <span class="ty">List&lt;String&gt;</span> <span class="nm">externalDomains</span> = [<span class="st">'facebook.com'</span>];</pre>
+  </div>
+</div>
+
+<!-- INSTALASI -->
+<div class="sec" id="install">
+  <div class="sec-h">📦 Instalasi</div>
+  <p class="sec-s">Dari download hingga app berjalan — ikuti langkah berikut</p>
+
+  <!-- Persyaratan -->
+  <div style="margin-bottom:28px">
+    <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">Persyaratan Minimum</div>
+    <div class="req-grid">
+      <div class="req-card"><div class="req-name">Flutter</div><div class="req-val">3.10.0+</div></div>
+      <div class="req-card"><div class="req-name">Dart</div><div class="req-val">3.0.0+</div></div>
+      <div class="req-card"><div class="req-name">Android</div><div class="req-val">API 21 (5.0+)</div></div>
+      <div class="req-card"><div class="req-name">iOS</div><div class="req-val">12.0+</div></div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Download atau Clone Project</div>
+        <p class="step-desc">Clone repository atau download ZIP, lalu masuk ke direktori project.</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">git clone https://github.com/your-repo/flutter-webview.git</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">cd flutter-webview</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Install Dependensi</div>
+        <p class="step-desc">Jalankan perintah berikut untuk mengunduh semua package yang dibutuhkan.</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter pub get</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Set URL &amp; Nama Aplikasi</div>
+        <p class="step-desc">Buka <code>lib/config/app_config.dart</code> dan ubah nilai berikut:</p>
+        <div class="cbox" style="margin-top:4px">
+          <div class="ctop">
+            <span class="d dr"></span><span class="d dy"></span><span class="d dg"></span>
+            <span class="cfile">lib/config/app_config.dart</span>
+          </div>
+<pre><span class="kw">static const</span> <span class="ty">String</span> <span class="nm">webUrl</span>  = <span class="st">'https://domain-anda.com'</span>;
+<span class="kw">static const</span> <span class="ty">String</span> <span class="nm">appName</span> = <span class="st">'Nama App Anda'</span>;</pre>
+        </div>
+        <p class="step-desc" style="margin-top:10px">⚠️ Untuk nama yang tampil di homescreen perangkat, ubah juga:<br>
+        &bull; <code>android:label</code> di <code>AndroidManifest.xml</code><br>
+        &bull; <code>CFBundleDisplayName</code> di <code>ios/Runner/Info.plist</code></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Ganti Ikon Aplikasi</div>
+        <p class="step-desc">Ganti <code>assets/offline/webview.png</code> dengan logo Anda (min 1024×1024 px), lalu generate ulang icon:</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">dart run flutter_launcher_icons</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Jalankan Aplikasi</div>
+        <p class="step-desc">Hubungkan perangkat atau jalankan emulator, lalu:</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter run</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter devices</span>
+          <span class="cmd-copy">📋 copy — lihat daftar device</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">Build Release</div>
+        <p class="step-desc">Siap distribusi? Build versi release:</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter build apk --release</span>
+          <span class="cmd-copy">📋 copy — Android APK</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter build appbundle --release</span>
+          <span class="cmd-copy">📋 copy — Google Play</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter build ios --release</span>
+          <span class="cmd-copy">📋 copy — iOS App Store</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sec" id="faq">
+  <div class="sec-h">❓ FAQ</div>
+  <p class="sec-s">Pertanyaan yang sering ditanyakan seputar penggunaan template ini</p>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Mengapa nama di <code>AppConfig.appName</code> tidak berpengaruh ke nama app di homescreen?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p><code>AppConfig.appName</code> hanya dipakai di dalam kode Flutter (judul MaterialApp, halaman offline, dll.). Nama yang tampil di launcher / homescreen perangkat diambil dari file native:</p>
+      <ul>
+        <li><strong>Android:</strong> <code>android:label</code> di <code>AndroidManifest.xml</code></li>
+        <li><strong>iOS:</strong> <code>CFBundleDisplayName</code> &amp; <code>CFBundleName</code> di <code>Info.plist</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Konten web tidak tampil saat offline, padahal sudah pernah dibuka?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Cache bergantung pada header HTTP server. Pastikan server mengirim header yang mengizinkan caching:</p>
+      <p><code>Cache-Control: public, max-age=86400</code></p>
+      <p>Atau gunakan <code>offlineSource = OfflineSource.localHtml</code> sebagai fallback yang lebih andal — konten HTML lokal selalu tersedia meski tidak ada cache.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Bagaimana cara mengontrol URL mana yang dibuka di WebView vs browser eksternal?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Gunakan dua config di <code>app_config.dart</code>:</p>
+      <ul>
+        <li><strong>allowedDomains</strong> — allowlist: hanya domain ini yang dibuka di WebView. Kosong = semua boleh masuk.</li>
+        <li><strong>externalDomains</strong> — blocklist: domain ini selalu dibuka di browser eksternal.</li>
+        <li><strong>externalSchemes</strong> — scheme yang dibuka di app eksternal (<code>tel:</code>, <code>mailto:</code>, <code>whatsapp:</code>, dll.).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">WebRTC / kamera tidak bekerja — bagaimana cara memperbaikinya?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Pastikan beberapa hal berikut:</p>
+      <ul>
+        <li><code>enableWebRTC = true</code> di <code>app_config.dart</code></li>
+        <li>Halaman web menggunakan <strong>HTTPS</strong> — WebRTC memerlukan secure context</li>
+        <li>Izin kamera &amp; mikrofon sudah ada di <code>AndroidManifest.xml</code> dan <code>Info.plist</code> (sudah dikonfigurasi otomatis)</li>
+        <li>Di iOS: pastikan <code>NSCameraUsageDescription</code> dan <code>NSMicrophoneUsageDescription</code> ada di <code>Info.plist</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Bagaimana cara mengirim data dari Flutter ke JavaScript (dan sebaliknya)?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p><strong>Flutter → JavaScript:</strong> gunakan <code>evaluateJavascript</code></p>
+      <p><code>await controller.evaluateJavascript(source: "window.token = '$token';");</code></p>
+      <p><strong>JavaScript → Flutter:</strong> tambahkan JavaScript handler di <code>onWebViewCreated</code></p>
+      <p><code>controller.addJavaScriptHandler(handlerName: 'myHandler', callback: (args) { ... });</code></p>
+      <p>Di JavaScript: <code>window.flutter_inappwebview.callHandler('myHandler', data);</code></p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Ikon aplikasi terpotong atau terlalu besar — bagaimana memperbaikinya?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Siapkan file PNG dengan ukuran minimal <strong>1024×1024 px</strong> dan tambahkan padding sekitar 10–20% di semua sisi agar ikon tidak terpotong saat di-crop menjadi lingkaran (adaptive icon Android) atau bentuk rounded (iOS).</p>
+      <p>Setelah mengganti file, generate ulang:</p>
+      <p><code>dart run flutter_launcher_icons</code></p>
+      <p>Untuk upload ke <strong>App Store iOS</strong>, tambahkan <code>remove_alpha_ios: true</code> di konfigurasi <code>flutter_launcher_icons</code> di <code>pubspec.yaml</code>.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Bagaimana cara mengaktifkan deep link HTTPS (App Links / Universal Links)?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p><strong>Android (App Links):</strong></p>
+      <ul>
+        <li>Uncomment intent-filter HTTPS di <code>AndroidManifest.xml</code></li>
+        <li>Upload file verifikasi ke <code>https://domain-anda.com/.well-known/assetlinks.json</code></li>
+      </ul>
+      <p><strong>iOS (Universal Links):</strong></p>
+      <ul>
+        <li>Aktifkan capability <em>Associated Domains</em> di Xcode</li>
+        <li>Upload file ke <code>https://domain-anda.com/.well-known/apple-app-site-association</code></li>
+        <li>Set <code>universalLinkDomain = 'domain-anda.com'</code> di <code>app_config.dart</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Status bar terlalu gelap atau terlalu terang — bagaimana mengaturnya?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Atur warna ikon status bar (jam, baterai, sinyal) di <code>app_config.dart</code>:</p>
+      <ul>
+        <li><code>Brightness.light</code> → ikon <strong>putih</strong> — untuk app dengan background gelap</li>
+        <li><code>Brightness.dark</code> → ikon <strong>hitam</strong> — untuk app dengan background terang</li>
+      </ul>
+      <p><code>static const Brightness statusBarIconBrightness = Brightness.light;</code></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- SHARE -->
+<div class="sec">
+  <div class="share-card">
+    <div class="share-h">📢 Bagikan ke Rekan Developer</div>
+    <p class="share-s">Temukan template ini berguna? Bagikan ke komunitas Flutter!</p>
+    <div class="share-row">
+      <button class="sbtn s-wa" onclick="doShare('whatsapp')">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </button>
+      <button class="sbtn s-tg" onclick="doShare('telegram')">
+        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </button>
+      <button class="sbtn s-tw" onclick="doShare('twitter')">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Twitter
+      </button>
+      <button class="sbtn s-fb" onclick="doShare('facebook')">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </button>
+      <button class="sbtn s-li" onclick="doShare('linkedin')">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </button>
+      <button class="sbtn s-cp" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEBVIEW TEST -->
+<div class="sec" id="dev">
+  <div class="sec-h">🧪 Test Fitur WebView</div>
+  <p class="sec-s">Uji semua kemampuan WebView langsung dari halaman ini — klik kategori untuk membuka</p>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)">
+      <div class="acc-l"><span>📜</span><strong>JavaScript &amp; Bridge</strong><span class="acc-tag">Core</span></div>
+      <span class="chev">›</span>
+    </div>
+    <div class="acc-b">
+      <div class="tgrid">
+        <button class="tbtn" onclick="testJS()"><span class="ico">⚡</span>Run JS</button>
+        <button class="tbtn" onclick="testBridge()"><span class="ico">🌉</span>Flutter Bridge</button>
+        <button class="tbtn" onclick="testStorage()"><span class="ico">💾</span>localStorage</button>
+        <button class="tbtn" onclick="testCookie()"><span class="ico">🍪</span>Cookie</button>
+        <button class="tbtn" onclick="testAlert()"><span class="ico">💬</span>Alert</button>
+        <button class="tbtn" onclick="testConfirm()"><span class="ico">❓</span>Confirm</button>
+        <button class="tbtn" onclick="testPrompt()"><span class="ico">✏️</span>Prompt</button>
+      </div>
+      <div class="result" id="r-js">Tekan tombol untuk mulai test...</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)">
+      <div class="acc-l"><span>🎥</span><strong>Kamera &amp; WebRTC</strong><span class="acc-tag">Media</span></div>
+      <span class="chev">›</span>
+    </div>
+    <div class="acc-b">
+      <div id="cam-wrap" style="display:none;margin-bottom:12px">
+        <video id="cam-vid" autoplay playsinline muted style="width:100%;max-height:220px;border-radius:10px;background:#000;object-fit:cover"></video>
+      </div>
+      <div class="tgrid">
+        <button class="tbtn" onclick="startCam()"><span class="ico">📷</span>Buka Kamera</button>
+        <button class="tbtn" onclick="startMic()"><span class="ico">🎤</span>Test Mikrofon</button>
+        <button class="tbtn" onclick="stopMedia()"><span class="ico">⏹️</span>Stop</button>
+      </div>
+      <div class="result" id="r-media">Tekan tombol untuk mulai test...</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)">
+      <div class="acc-l"><span>📍</span><strong>Geolokasi / GPS</strong><span class="acc-tag">Location</span></div>
+      <span class="chev">›</span>
+    </div>
+    <div class="acc-b">
+      <div class="tgrid">
+        <button class="tbtn" onclick="getLoc()"><span class="ico">📍</span>Get Location</button>
+        <button class="tbtn" onclick="watchLoc()"><span class="ico">👁️</span>Watch GPS</button>
+        <button class="tbtn" onclick="stopWatch()"><span class="ico">⏹️</span>Stop Watch</button>
+      </div>
+      <div class="result" id="r-gps">Tekan tombol untuk mulai test...</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)">
+      <div class="acc-l"><span>📁</span><strong>Upload &amp; Download</strong><span class="acc-tag">File</span></div>
+      <span class="chev">›</span>
+    </div>
+    <div class="acc-b">
+      <div class="tgrid">
+        <button class="tbtn" onclick="document.getElementById('fi').click()"><span class="ico">📤</span>Upload File</button>
+        <button class="tbtn" onclick="dlBlob()"><span class="ico">📥</span>Download Blob</button>
+        <button class="tbtn" onclick="dlUrl()"><span class="ico">🔗</span>Download URL</button>
+      </div>
+      <input type="file" id="fi" multiple style="display:none" onchange="onFile(this)">
+      <div class="result" id="r-file">Tekan tombol untuk mulai test...</div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)">
+      <div class="acc-l"><span>📱</span><strong>Device &amp; API</strong><span class="acc-tag">Info</span></div>
+      <span class="chev">›</span>
+    </div>
+    <div class="acc-b">
+      <div class="tgrid">
+        <button class="tbtn" onclick="deviceInfo()"><span class="ico">📱</span>Device Info</button>
+        <button class="tbtn" onclick="testClipboard()"><span class="ico">📋</span>Clipboard</button>
+        <button class="tbtn" onclick="testVibrate()"><span class="ico">📳</span>Vibrate</button>
+        <button class="tbtn" onclick="testFetch()"><span class="ico">🌐</span>Fetch API</button>
+      </div>
+      <div class="result" id="r-device">Tekan tombol untuk mulai test...</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Built with ❤️ by <a href="https://weruka.dev" target="_blank" rel="noopener">weruka.dev</a>
+  &nbsp;·&nbsp; Flutter WebView Template &nbsp;·&nbsp; MIT License
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const set = (id, txt) => $(id).textContent = txt;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+const SHARE_URL  = document.querySelector('link[rel="canonical"]')?.href || location.href;
+const SHARE_TEXT = 'Template Flutter WebView kaya fitur — semua konfigurasi dalam satu file! 🚀\n';
+
+function doShare(p) {
+  const u = encodeURIComponent(SHARE_URL);
+  const t = encodeURIComponent(SHARE_TEXT);
+  const map = {
+    whatsapp: `https://wa.me/?text=${t}${u}`,
+    telegram: `https://t.me/share/url?url=${u}&text=${t}`,
+    twitter:  `https://twitter.com/intent/tweet?url=${u}&text=${t}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`,
+  };
+  window.open(map[p], '_blank', 'width=620,height=520,noopener');
+}
+function copyLink() {
+  const fb = () => {
+    const ta = Object.assign(document.createElement('textarea'), {value: SHARE_URL});
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); toast('✅ Link disalin!');
+  };
+  navigator.clipboard?.writeText(SHARE_URL).then(() => toast('✅ Link disalin!')).catch(fb);
+}
+
+// ── Accordion ─────────────────────────────────────────────────────────────────
+function toggleAcc(head) {
+  const body = head.nextElementSibling;
+  const open = body.classList.toggle('open');
+  head.querySelector('.chev').style.transform = open ? 'rotate(90deg)' : '';
+}
+
+// ── FAQ ───────────────────────────────────────────────────────────────────────
+function toggleFaq(q) {
+  const a = q.nextElementSibling;
+  const open = a.classList.toggle('open');
+  q.querySelector('.faq-chev').style.transform = open ? 'rotate(90deg)' : '';
+}
+
+// ── Copy command ──────────────────────────────────────────────────────────────
+function copyCmd(el) {
+  const txt = el.querySelector('.cmd-text').textContent;
+  const fb = () => {
+    const ta = Object.assign(document.createElement('textarea'), {value: txt});
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  };
+  navigator.clipboard?.writeText(txt).catch(fb).then?.(() => {}) || fb();
+  const copy = el.querySelector('.cmd-copy');
+  const orig = copy.textContent;
+  copy.textContent = '✅ copied!';
+  setTimeout(() => copy.textContent = orig, 1800);
+}
+
+// ── JS & Bridge ───────────────────────────────────────────────────────────────
+function testJS() {
+  const sq = [1,2,3,4,5].map(x => x*x).join(', ');
+  set('r-js', `✅ JavaScript OK!\nSquares : [${sq}]\nDate    : ${new Date().toLocaleString('id-ID')}\nUA      : ${navigator.userAgent.slice(0,90)}…`);
+}
+function testBridge() {
+  if (window.flutter_inappwebview) {
+    set('r-js', '✅ Flutter bridge tersedia!\nwindow.flutter_inappwebview ditemukan.');
+    try { window.flutter_inappwebview.callHandler('testHandler', {from:'web', ts:Date.now()}); } catch(_){}
+  } else {
+    set('r-js', '⚠️ Flutter bridge tidak tersedia.\n(Normal jika dibuka di browser biasa, bukan dalam app Flutter)');
+  }
+}
+function testStorage() {
+  const val = 'webview_' + Date.now();
+  localStorage.setItem('wv_key', val);
+  set('r-js', `✅ localStorage OK!\nDitulis : ${val}\nDibaca  : ${localStorage.getItem('wv_key')}\nTotal   : ${localStorage.length} key`);
+}
+function testCookie() {
+  document.cookie = `wv=${Date.now()}; path=/; max-age=3600`;
+  set('r-js', `✅ Cookie OK!\n${document.cookie}`);
+}
+function testAlert()   { alert('Alert dari JavaScript!\nJika tampil sebagai dialog Flutter modern = ✅'); }
+async function testConfirm() {
+  const ok = confirm('Confirm dari JavaScript.\nPilih OK atau Batal.');
+  set('r-js', `Confirm result: ${ok ? '✅ OK ditekan' : '❌ Batal ditekan'}`);
+}
+async function testPrompt() {
+  const val = prompt('Masukkan teks apa saja:', 'Halo Flutter!');
+  set('r-js', val != null ? `✅ Prompt: "${val}"` : '❌ Prompt dibatalkan');
+}
+
+// ── Camera / WebRTC ───────────────────────────────────────────────────────────
+let mStream = null;
+async function startCam() {
+  try {
+    mStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
+    $('cam-vid').srcObject = mStream;
+    $('cam-wrap').style.display = 'block';
+    set('r-media', '✅ Kamera aktif!\nTrack: ' + mStream.getVideoTracks()[0].label);
+  } catch(e) { set('r-media', '❌ ' + e.message); }
+}
+async function startMic() {
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({audio:true, video:false});
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    ctx.createMediaStreamSource(s).connect(ctx.createAnalyser());
+    set('r-media', `✅ Mikrofon aktif!\nTrack  : ${s.getAudioTracks()[0].label}\nContext: ${ctx.state}`);
+  } catch(e) { set('r-media', '❌ ' + e.message); }
+}
+function stopMedia() {
+  mStream?.getTracks().forEach(t => t.stop()); mStream = null;
+  $('cam-wrap').style.display = 'none';
+  set('r-media', '⏹️ Media dihentikan.');
+}
+
+// ── GPS ───────────────────────────────────────────────────────────────────────
+let wid = null;
+function getLoc() {
+  set('r-gps', '⏳ Mengambil lokasi…');
+  navigator.geolocation.getCurrentPosition(
+    p => set('r-gps', `✅ Lokasi ditemukan!\nLat      : ${p.coords.latitude.toFixed(6)}\nLng      : ${p.coords.longitude.toFixed(6)}\nAkurasi  : ${p.coords.accuracy.toFixed(0)} m\nAltitude : ${p.coords.altitude ?? 'N/A'} m`),
+    e => set('r-gps', '❌ ' + e.message),
+    {enableHighAccuracy:true, timeout:10000}
+  );
+}
+function watchLoc() {
+  set('r-gps', '👁️ Watching GPS…');
+  wid = navigator.geolocation.watchPosition(
+    p => set('r-gps', `👁️ Watch aktif\nLat    : ${p.coords.latitude.toFixed(6)}\nLng    : ${p.coords.longitude.toFixed(6)}\nAkurasi: ${p.coords.accuracy.toFixed(0)} m\nWaktu  : ${new Date().toLocaleTimeString('id-ID')}`),
+    e => set('r-gps', '❌ ' + e.message)
+  );
+}
+function stopWatch() {
+  if (wid) { navigator.geolocation.clearWatch(wid); wid = null; }
+  set('r-gps', '⏹️ GPS watch dihentikan.');
+}
+
+// ── File ──────────────────────────────────────────────────────────────────────
+function onFile(inp) {
+  const files = Array.from(inp.files);
+  set('r-file', `✅ ${files.length} file dipilih:\n` +
+    files.map(f => `  ${f.name}  (${(f.size/1024).toFixed(1)} KB · ${f.type||'unknown'})`).join('\n'));
+}
+function dlBlob() {
+  const blob = new Blob([`Flutter WebView Test\nGenerated: ${new Date().toISOString()}\n\nHello! 🚀`], {type:'text/plain'});
+  const a = Object.assign(document.createElement('a'), {href:URL.createObjectURL(blob), download:'webview-test.txt'});
+  a.click(); URL.revokeObjectURL(a.href);
+  set('r-file', '✅ Download Blob dimulai!\nFile: webview-test.txt');
+}
+function dlUrl() {
+  const url = 'https://www.w3.org/WAI/WCAG21/Techniques/pdf/pdf-sample.pdf';
+  Object.assign(document.createElement('a'), {href:url, download:'sample.pdf'}).click();
+  set('r-file', '✅ Download URL dimulai!\n' + url);
+}
+
+// ── Device & API ──────────────────────────────────────────────────────────────
+function deviceInfo() {
+  set('r-device', '✅ Device Info:\n' + [
+    `Platform        : ${navigator.platform}`,
+    `Language        : ${navigator.language}`,
+    `Online          : ${navigator.onLine}`,
+    `Screen          : ${screen.width}×${screen.height} (${screen.colorDepth}bit)`,
+    `Window          : ${window.innerWidth}×${window.innerHeight}`,
+    `devicePixelRatio: ${devicePixelRatio}`,
+    `Touch           : ${'ontouchstart' in window ? 'Yes' : 'No'}`,
+    `RAM             : ${navigator.deviceMemory ?? 'N/A'} GB`,
+    `CPU Cores       : ${navigator.hardwareConcurrency ?? 'N/A'}`,
+    `Cookies enabled : ${navigator.cookieEnabled}`,
+  ].join('\n'));
+}
+async function testClipboard() {
+  const txt = 'Copied from Flutter WebView 📋';
+  try {
+    await navigator.clipboard.writeText(txt);
+    set('r-device', '✅ Clipboard OK!\nTeks disalin: ' + txt);
+  } catch(e) {
+    set('r-device', '⚠️ Clipboard: ' + e.message + '\n(Butuh HTTPS atau izin pengguna)');
+  }
+}
+function testVibrate() {
+  if (navigator.vibrate) {
+    navigator.vibrate([200,100,200,100,400]);
+    set('r-device', '✅ Vibration OK!\nPola: 200ms • 100ms jeda • 200ms • 100ms jeda • 400ms');
+  } else {
+    set('r-device', '⚠️ Vibration API tidak tersedia di perangkat ini.');
+  }
+}
+async function testFetch() {
+  set('r-device', '⏳ Fetching httpbin.org…');
+  try {
+    const r = await fetch('https://httpbin.org/get');
+    const d = await r.json();
+    set('r-device', `✅ Fetch OK!\nStatus  : ${r.status}\nIP      : ${d.origin}\nHeaders : ${Object.keys(d.headers).length} entries`);
+  } catch(e) { set('r-device', '❌ Fetch error: ' + e.message); }
+}
+</script>
+</body>
+</html>

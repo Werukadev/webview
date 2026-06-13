@@ -1,0 +1,59 @@
+name: webview_app
+description: "Feature-rich Flutter WebView — satu config file untuk semua pengaturan."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # WebView engine (paling powerful di Flutter)
+  flutter_inappwebview: ^6.1.5
+
+  # Deteksi koneksi internet
+  connectivity_plus: ^6.1.1
+
+  # Izin runtime (kamera, mikrofon, storage, lokasi)
+  permission_handler: ^11.3.1
+
+  # Path direktori sistem
+  path_provider: ^2.1.4
+
+  # Deep link handler (custom scheme + App Links/Universal Links)
+  app_links: ^6.3.2
+
+  # Buka URL di browser eksternal
+  url_launcher: ^6.3.1
+
+  # Download file via HTTP
+  dio: ^5.7.0
+
+  # Buka file hasil download
+  open_filex: ^4.4.1
+
+  # File picker untuk upload
+  file_picker: ^8.1.2
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/offline/webview.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/offline/webview.png"
+  min_sdk_android: 21
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/offline/
