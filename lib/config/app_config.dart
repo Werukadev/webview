@@ -23,7 +23,7 @@ abstract final class AppConfig {
   /// Sumber konten saat perangkat offline:
   ///   OfflineSource.cache     → tampilkan cache dari [webUrl]
   ///   OfflineSource.localHtml → tampilkan file HTML lokal
-  static const OfflineSource offlineSource = OfflineSource.cache;
+  static const OfflineSource offlineSource = OfflineSource.localHtml;
 
   /// Offline-first: true = cache dulu (lebih cepat, hemat kuota),
   ///               false = network dulu, cache sebagai fallback.

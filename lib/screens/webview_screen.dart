@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -179,12 +181,49 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Future<void> _loadOfflineHtml() async {
     if (!mounted) return;
     setState(() => _loadedLocalFallback = true);
-    final html = await rootBundle.loadString(AppConfig.offlineHtmlAsset);
-    await _controller?.loadData(
-      data: html,
-      mimeType: 'text/html',
-      encoding: 'utf-8',
-      baseUrl: WebUri('file:///android_asset/flutter_assets/'),
+    if (Platform.isAndroid) {
+      // Load via file:// URL so relative assets (images, CSS) resolve correctly.
+      // android_asset maps directly to flutter_assets in the APK.
+      await _controller?.loadUrl(
+        urlRequest: URLRequest(
+          url: WebUri(
+            'file:///android_asset/flutter_assets/${AppConfig.offlineHtmlAsset}',
+          ),
+        ),
+      );
+    } else {
+      await _loadOfflineHtmlIOS();
+    }
+  }
+
+  // iOS: copy all offline assets to a temp directory so that file:// URL
+  // resolves relative paths (webview.png, etc.) correctly.
+  Future<void> _loadOfflineHtmlIOS() async {
+    final tmpDir = await getTemporaryDirectory();
+
+    final assetDir = AppConfig.offlineHtmlAsset.substring(
+      0,
+      AppConfig.offlineHtmlAsset.lastIndexOf('/'),
+    ); // e.g. "assets/offline"
+
+    final manifestStr = await rootBundle.loadString('AssetManifest.json');
+    final manifest = json.decode(manifestStr) as Map<String, dynamic>;
+
+    for (final assetKey in manifest.keys) {
+      if (!assetKey.startsWith('$assetDir/')) continue;
+      try {
+        final data = await rootBundle.load(assetKey);
+        final fileName = assetKey.split('/').last;
+        final outFile = File('${tmpDir.path}/$fileName');
+        await outFile.writeAsBytes(data.buffer.asUint8List(), flush: true);
+      } catch (_) {}
+    }
+
+    final htmlFileName = AppConfig.offlineHtmlAsset.split('/').last;
+    await _controller?.loadUrl(
+      urlRequest: URLRequest(
+        url: WebUri('file://${tmpDir.path}/$htmlFileName'),
+      ),
     );
   }
 
@@ -309,6 +348,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
         final uri = action.request.url;
         final url = uri?.toString() ?? '';
         final host = uri?.host ?? '';
+
+        // Always allow local file:// assets (offline HTML, images, etc.)
+        if (url.startsWith('file://')) return NavigationActionPolicy.ALLOW;
 
         // 1. externalSchemes → open in matching external app (dialer, email, …)
         for (final scheme in AppConfig.externalSchemes) {
