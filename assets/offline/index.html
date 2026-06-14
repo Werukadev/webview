@@ -658,6 +658,36 @@
     <div class="step">
       <div class="step-num">5</div>
       <div class="step-body">
+        <div class="step-title">Ganti Package Name</div>
+        <p class="step-desc">Package name adalah identitas unik app Anda di Play Store &amp; App Store. Format: <code>com.namaorganisasi.namaapp</code></p>
+        <p class="step-desc"><strong>Android</strong> — edit <code>android/app/build.gradle.kts</code>, ubah dua baris ini:</p>
+        <div class="cbox" style="margin-top:4px;margin-bottom:10px">
+          <div class="ctop">
+            <span class="d dr"></span><span class="d dy"></span><span class="d dg"></span>
+            <span class="cfile">android/app/build.gradle.kts</span>
+          </div>
+<pre><span class="nm">namespace</span>     = <span class="st">"com.namaorganisasi.namaapp"</span>
+<span class="nm">applicationId</span> = <span class="st">"com.namaorganisasi.namaapp"</span></pre>
+        </div>
+        <p class="step-desc"><strong>iOS</strong> — Buka Xcode → Runner → General → <strong>Bundle Identifier</strong>, atau gunakan tool otomatis:</p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">dart pub global activate rename</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"</span>
+          <span class="cmd-copy">📋 copy</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">flutter clean && flutter pub get</span>
+          <span class="cmd-copy">📋 copy — wajib setelah ganti package name</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
         <div class="step-title">Jalankan Aplikasi</div>
         <p class="step-desc">Hubungkan perangkat atau jalankan emulator, lalu:</p>
         <div class="cmd" onclick="copyCmd(this)">
@@ -672,7 +702,7 @@
     </div>
 
     <div class="step">
-      <div class="step-num">6</div>
+      <div class="step-num">7</div>
       <div class="step-body">
         <div class="step-title">Build Release</div>
         <p class="step-desc">Siap distribusi? Build versi release:</p>
@@ -698,6 +728,22 @@
 <div class="sec" id="faq">
   <div class="sec-h">❓ FAQ</div>
   <p class="sec-s">Pertanyaan yang sering ditanyakan seputar penggunaan template ini</p>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      <span class="faq-q-text">Bagaimana cara mengubah package name / bundle ID aplikasi?</span>
+      <span class="faq-chev">›</span>
+    </div>
+    <div class="faq-a">
+      <p>Package name adalah identitas unik app di Play Store &amp; App Store — harus diubah sebelum publish. Format: <code>com.namaorganisasi.namaapp</code></p>
+      <ul>
+        <li><strong>Android:</strong> Edit <code>android/app/build.gradle.kts</code> — ubah <code>namespace</code> dan <code>applicationId</code></li>
+        <li><strong>iOS:</strong> Buka Xcode → Runner target → General → <strong>Bundle Identifier</strong></li>
+      </ul>
+      <p>Atau gunakan tool otomatis: <code>dart pub global activate rename</code>, lalu <code>dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"</code></p>
+      <p>Setelah mengganti, jalankan <code>flutter clean &amp;&amp; flutter pub get</code>.</p>
+    </div>
+  </div>
 
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)">

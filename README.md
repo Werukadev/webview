@@ -34,6 +34,9 @@ Template Flutter WebView yang siap pakai dan kaya fitur. Semua konfigurasi terpu
   - [Android](#android)
   - [iOS](#ios)
 - [Nama &amp; Ikon Aplikasi](#nama--ikon-aplikasi)
+  - [Nama Aplikasi](#nama-aplikasi)
+  - [Ikon Aplikasi](#ikon-aplikasi)
+  - [Package Name](#package-name-application-id--bundle-id)
 - [Build & Release](#build--release)
 - [FAQ](#faq)
 
@@ -713,6 +716,73 @@ flutter_launcher_icons:
 
 ---
 
+### Package Name (Application ID / Bundle ID)
+
+Package name adalah identitas unik app Anda di Play Store dan App Store. Harus diubah sebelum publish — dua app dengan package name yang sama tidak bisa dipasang di satu perangkat.
+
+> **Format:** `com.namaorganisasi.namaapp` — hanya huruf kecil, angka, dan titik. Contoh: `com.weruka.myapp`
+
+#### Android — `android/app/build.gradle.kts`
+
+Ubah **dua nilai** berikut:
+
+```kotlin
+android {
+    namespace = "com.namaorganisasi.namaapp"   // ← ganti (sama dengan applicationId)
+
+    defaultConfig {
+        applicationId = "com.namaorganisasi.namaapp"   // ← ganti
+        ...
+    }
+}
+```
+
+> **`namespace` vs `applicationId`:** `namespace` dipakai untuk resolusi class R dan BuildConfig (umumnya sama dengan `applicationId`). `applicationId` adalah identitas app di Play Store. Keduanya harus diubah dan umumnya dibuat sama.
+
+#### iOS — Xcode (Direkomendasikan)
+
+1. Buka `ios/Runner.xcworkspace` di **Xcode**
+2. Pilih target **Runner** di sidebar kiri
+3. Tab **General** → bagian **Identity**
+4. Ubah **Bundle Identifier**: `com.webview.webviewApp` → `com.namaorganisasi.namaapp`
+
+Atau edit langsung `ios/Runner.xcodeproj/project.pbxproj` — cari dan ganti semua kemunculan `com.webview.webviewApp`:
+
+```
+PRODUCT_BUNDLE_IDENTIFIER = com.namaorganisasi.namaapp;
+```
+
+> File ini berisi beberapa entri (Debug, Release, Profile) — ganti semuanya.
+
+#### FileProvider (Android) — Tidak Perlu Diubah
+
+Authority FileProvider di `AndroidManifest.xml` sudah memakai placeholder `${applicationId}` yang otomatis menyesuaikan:
+
+```xml
+<provider
+    android:authorities="${applicationId}.fileprovider"
+    ...>
+```
+
+#### Cara Cepat: Gunakan `flutter_rename`
+
+Untuk mengganti package name di semua file sekaligus (termasuk file native):
+
+```bash
+dart pub global activate rename
+dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"
+```
+
+Setelah mengganti package name, jalankan:
+
+```bash
+flutter clean
+flutter pub get
+flutter run
+```
+
+---
+
 ## Build & Release
 
 ### Android
@@ -748,6 +818,22 @@ Lihat panduan resmi: https://docs.flutter.dev/deployment/ios
 ---
 
 ## FAQ
+
+**Q: Bagaimana cara mengubah package name / bundle ID aplikasi?**
+
+A: Package name harus diubah di dua tempat native:
+- **Android:** `android/app/build.gradle.kts` — ubah `namespace` dan `applicationId`
+- **iOS:** Buka Xcode → Runner target → General → Bundle Identifier
+
+Atau gunakan tool otomatis:
+```bash
+dart pub global activate rename
+dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"
+```
+
+Lihat section [Package Name](#package-name-application-id--bundle-id) untuk panduan lengkap.
+
+---
 
 **Q: Konten web tidak tampil saat offline, padahal sudah pernah dibuka?**
 
