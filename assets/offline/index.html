@@ -659,8 +659,9 @@
       <div class="step-num">5</div>
       <div class="step-body">
         <div class="step-title">Ganti Package Name</div>
-        <p class="step-desc">Package name adalah identitas unik app Anda di Play Store &amp; App Store. Format: <code>com.namaorganisasi.namaapp</code></p>
-        <p class="step-desc"><strong>Android</strong> — edit <code>android/app/build.gradle.kts</code>, ubah dua baris ini:</p>
+        <p class="step-desc">Package name adalah identitas unik app Anda di Play Store &amp; App Store. Format: <code>com.namaorganisasi.namaapp</code>. Ada <strong>3 lokasi</strong> yang wajib diubah secara bersamaan di Android.</p>
+
+        <p class="step-desc"><strong>① build.gradle.kts</strong> — ubah <code>namespace</code> dan <code>applicationId</code>:</p>
         <div class="cbox" style="margin-top:4px;margin-bottom:10px">
           <div class="ctop">
             <span class="d dr"></span><span class="d dy"></span><span class="d dg"></span>
@@ -669,7 +670,36 @@
 <pre><span class="nm">namespace</span>     = <span class="st">"com.namaorganisasi.namaapp"</span>
 <span class="nm">applicationId</span> = <span class="st">"com.namaorganisasi.namaapp"</span></pre>
         </div>
-        <p class="step-desc"><strong>iOS</strong> — Buka Xcode → Runner → General → <strong>Bundle Identifier</strong>, atau gunakan tool otomatis:</p>
+
+        <p class="step-desc"><strong>② Rename folder Kotlin</strong> — struktur direktori harus cocok dengan package name baru. Folder saat ini: <code>kotlin/com/webview/webview_app/</code></p>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">mkdir -p android/app/src/main/kotlin/com/namaorganisasi/namaapp</span>
+          <span class="cmd-copy">📋 buat folder baru</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">mv android/app/src/main/kotlin/com/webview/webview_app/MainActivity.kt android/app/src/main/kotlin/com/namaorganisasi/namaapp/</span>
+          <span class="cmd-copy">📋 pindah file</span>
+        </div>
+        <div class="cmd" onclick="copyCmd(this)">
+          <span class="cmd-text">rm -rf android/app/src/main/kotlin/com/webview</span>
+          <span class="cmd-copy">📋 hapus folder lama</span>
+        </div>
+
+        <p class="step-desc"><strong>③ Update deklarasi package</strong> di <code>MainActivity.kt</code> baris pertama:</p>
+        <div class="cbox" style="margin-top:4px;margin-bottom:10px">
+          <div class="ctop">
+            <span class="d dr"></span><span class="d dy"></span><span class="d dg"></span>
+            <span class="cfile">android/app/src/main/kotlin/…/MainActivity.kt</span>
+          </div>
+<pre><span class="kw">package</span> <span class="nm">com.namaorganisasi.namaapp</span>   <span class="cm">// ← ganti baris ini</span>
+
+<span class="kw">import</span> io.flutter.embedding.android.FlutterActivity
+
+<span class="kw">class</span> <span class="ty">MainActivity</span> : <span class="ty">FlutterActivity</span>()</pre>
+        </div>
+
+        <p class="step-desc"><strong>iOS</strong> — Buka Xcode → Runner → General → <strong>Bundle Identifier</strong>.</p>
+        <p class="step-desc" style="color:var(--primary);margin-top:-4px">💡 <strong>Cara cepat:</strong> Gunakan tool <code>rename</code> untuk mengubah semua lokasi di atas sekaligus (termasuk rename folder Kotlin otomatis):</p>
         <div class="cmd" onclick="copyCmd(this)">
           <span class="cmd-text">dart pub global activate rename</span>
           <span class="cmd-copy">📋 copy</span>
@@ -680,7 +710,7 @@
         </div>
         <div class="cmd" onclick="copyCmd(this)">
           <span class="cmd-text">flutter clean && flutter pub get</span>
-          <span class="cmd-copy">📋 copy — wajib setelah ganti package name</span>
+          <span class="cmd-copy">📋 wajib setelah ganti package name</span>
         </div>
       </div>
     </div>
@@ -736,11 +766,14 @@
     </div>
     <div class="faq-a">
       <p>Package name adalah identitas unik app di Play Store &amp; App Store — harus diubah sebelum publish. Format: <code>com.namaorganisasi.namaapp</code></p>
+      <p><strong>Android — 3 lokasi wajib diubah bersamaan:</strong></p>
       <ul>
-        <li><strong>Android:</strong> Edit <code>android/app/build.gradle.kts</code> — ubah <code>namespace</code> dan <code>applicationId</code></li>
-        <li><strong>iOS:</strong> Buka Xcode → Runner target → General → <strong>Bundle Identifier</strong></li>
+        <li><code>android/app/build.gradle.kts</code> — ubah <code>namespace</code> dan <code>applicationId</code></li>
+        <li><strong>Rename folder Kotlin</strong> dari <code>kotlin/com/webview/webview_app/</code> ke <code>kotlin/com/namaorganisasi/namaapp/</code> — folder harus cocok dengan package name</li>
+        <li><code>MainActivity.kt</code> — ubah baris <code>package com.webview.webview_app</code> menjadi package name baru</li>
       </ul>
-      <p>Atau gunakan tool otomatis: <code>dart pub global activate rename</code>, lalu <code>dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"</code></p>
+      <p><strong>iOS:</strong> Buka Xcode → Runner target → General → <strong>Bundle Identifier</strong>.</p>
+      <p>💡 <strong>Cara cepat:</strong> Gunakan <code>rename</code> — otomatis mengubah semua lokasi termasuk rename folder Kotlin: <code>dart pub global activate rename</code> lalu <code>dart pub global run rename setBundleId --targets android,ios --value "com.namaorganisasi.namaapp"</code></p>
       <p>Setelah mengganti, jalankan <code>flutter clean &amp;&amp; flutter pub get</code>.</p>
     </div>
   </div>

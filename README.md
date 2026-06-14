@@ -722,13 +722,15 @@ Package name adalah identitas unik app Anda di Play Store dan App Store. Harus d
 
 > **Format:** `com.namaorganisasi.namaapp` — hanya huruf kecil, angka, dan titik. Contoh: `com.weruka.myapp`
 
-#### Android — `android/app/build.gradle.kts`
+#### Android — Langkah Lengkap (Manual)
 
-Ubah **dua nilai** berikut:
+Ada **3 lokasi** yang wajib diubah secara bersamaan di Android:
+
+**1. `android/app/build.gradle.kts`** — ubah `namespace` dan `applicationId`:
 
 ```kotlin
 android {
-    namespace = "com.namaorganisasi.namaapp"   // ← ganti (sama dengan applicationId)
+    namespace = "com.namaorganisasi.namaapp"   // ← ganti
 
     defaultConfig {
         applicationId = "com.namaorganisasi.namaapp"   // ← ganti
@@ -737,7 +739,56 @@ android {
 }
 ```
 
-> **`namespace` vs `applicationId`:** `namespace` dipakai untuk resolusi class R dan BuildConfig (umumnya sama dengan `applicationId`). `applicationId` adalah identitas app di Play Store. Keduanya harus diubah dan umumnya dibuat sama.
+> **`namespace` vs `applicationId`:** `namespace` dipakai untuk resolusi class R dan BuildConfig. `applicationId` adalah identitas app di Play Store. Keduanya harus sama.
+
+**2. Rename folder Kotlin** — struktur direktori harus cocok dengan package name:
+
+```
+Sebelum:
+android/app/src/main/kotlin/com/webview/webview_app/
+
+Sesudah (contoh com.weruka.myapp):
+android/app/src/main/kotlin/com/weruka/myapp/
+```
+
+Cara rename di terminal:
+```bash
+# Buat folder baru sesuai package name baru
+mkdir -p android/app/src/main/kotlin/com/namaorganisasi/namaapp
+
+# Pindahkan MainActivity.kt ke folder baru
+mv android/app/src/main/kotlin/com/webview/webview_app/MainActivity.kt \
+   android/app/src/main/kotlin/com/namaorganisasi/namaapp/
+
+# Hapus folder lama
+rm -rf android/app/src/main/kotlin/com/webview
+```
+
+**3. Update deklarasi `package` di `MainActivity.kt`:**
+
+```kotlin
+// Sebelum
+package com.webview.webview_app
+
+// Sesudah
+package com.namaorganisasi.namaapp
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
+```
+
+> ⚠️ Jika folder dan deklarasi `package` tidak cocok dengan `namespace` di `build.gradle.kts`, build Android akan gagal dengan error `package does not match`.
+
+#### FileProvider (Android) — Tidak Perlu Diubah
+
+Authority FileProvider di `AndroidManifest.xml` sudah memakai placeholder `${applicationId}` yang otomatis menyesuaikan:
+
+```xml
+<provider
+    android:authorities="${applicationId}.fileprovider"
+    ...>
+```
 
 #### iOS — Xcode (Direkomendasikan)
 
@@ -754,19 +805,9 @@ PRODUCT_BUNDLE_IDENTIFIER = com.namaorganisasi.namaapp;
 
 > File ini berisi beberapa entri (Debug, Release, Profile) — ganti semuanya.
 
-#### FileProvider (Android) — Tidak Perlu Diubah
+#### Cara Cepat: Gunakan `rename` (Otomatis)
 
-Authority FileProvider di `AndroidManifest.xml` sudah memakai placeholder `${applicationId}` yang otomatis menyesuaikan:
-
-```xml
-<provider
-    android:authorities="${applicationId}.fileprovider"
-    ...>
-```
-
-#### Cara Cepat: Gunakan `flutter_rename`
-
-Untuk mengganti package name di semua file sekaligus (termasuk file native):
+Tool `rename` mengganti package name di **semua file sekaligus** — termasuk rename folder Kotlin, update deklarasi `package`, dan Bundle Identifier iOS:
 
 ```bash
 dart pub global activate rename
