@@ -101,6 +101,13 @@ abstract final class AppConfig {
   ///           yang desain webnya sudah menyertakan safe area sendiri)
   static const bool safeAreaTop = true;
 
+  /// Tambahkan padding di atas navigation bar agar konten WebView tidak
+  /// tertutup tombol Back / Home / Recents (gesture bar / button bar).
+  ///   true  → konten berakhir di atas navigation bar (AMAN, direkomendasikan)
+  ///   false → konten memanjang sampai bawah layar (cocok jika desain web
+  ///           sudah menangani safe area sendiri via CSS env(safe-area-inset-bottom))
+  static const bool safeAreaBottom = true;
+
   /// Warna ikon & teks di status bar perangkat (jam, baterai, sinyal, dll).
   ///   Brightness.light → ikon PUTIH  (untuk background gelap, seperti screenshot)
   ///   Brightness.dark  → ikon HITAM  (untuk background terang)

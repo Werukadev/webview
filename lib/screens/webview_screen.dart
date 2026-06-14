@@ -272,7 +272,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         backgroundColor: AppConfig.backgroundColor,
         body: SafeArea(
           top: AppConfig.safeAreaTop,
-          bottom: false,
+          bottom: AppConfig.safeAreaBottom,
           child: Column(
             children: [
               if (AppConfig.showOfflineBanner && _isOffline) const OfflineBanner(),
